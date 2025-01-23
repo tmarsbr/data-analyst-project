@@ -1,83 +1,147 @@
-# Análise Exploratória de Dados - Spotify Most Streamed Songs
+# 🎵 Análise de Músicas Mais Streamadas do Spotify
 
 ## 📊 Sobre o Projeto
-Este projeto realiza uma análise exploratória detalhada das músicas mais tocadas no Spotify, utilizando técnicas de Data Science e ferramentas de visualização de dados em Python. O estudo visa compreender os fatores que contribuem para o sucesso das músicas na plataforma.
+Uma análise exploratória aprofundada das músicas mais streamadas no Spotify em 2023, utilizando Python e técnicas avançadas de Data Science para descobrir padrões e tendências que definem o sucesso musical na era do streaming.
 
 ## 🎯 Objetivos
-- Analisar padrões nas músicas mais populares do Spotify
-- Identificar características que contribuem para o sucesso de uma música
-- Explorar correlações entre diferentes métricas musicais
-- Visualizar tendências e distribuições dos dados
-- Gerar insights acionáveis para artistas e produtores
+### Principais
+- Identificar padrões de sucesso em músicas populares
+- Analisar correlações entre características musicais e streams
+- Mapear tendências temporais de lançamentos
 
-## 🔍 Principais Descobertas
-- Características musicais ideais para streams
-- Padrões de colaboração mais bem-sucedidos
-- Impacto da presença em playlists
-- Tendências de distribuição entre plataformas
+### Específicos
+- Quantificar o impacto de features musicais (danceability, energy, etc.)
+- Avaliar a influência de colaborações entre artistas
+- Medir o efeito da presença em playlists
 
-## 📈 Visualizações
-- Gráficos de distribuição de streams
-- Análise de correlação entre métricas
-- Boxplots de características musicais
-- Heatmaps de relações entre variáveis
+## 📈 Metodologia
+1. **Coleta de Dados**
+   - Dataset do Spotify com músicas mais streamadas
+   - Métricas de áudio e engajamento
+   - Dados de playlists e charts
 
-## 🛠️ Tecnologias Utilizadas
-- Python 3.x
-- Pandas 1.x
-- NumPy 1.x
-- Matplotlib 3.x
+2. **Pré-processamento**
+   - Limpeza de dados ausentes
+   - Normalização de features
+   - Tratamento de outliers
+
+3. **Análise Exploratória**
+   - Distribuições estatísticas
+   - Correlações entre variáveis
+   - Análise temporal
+
+## 🔬 Principais Análises
+1. **Métricas de Popularidade**
+   - Distribuição de streams
+   - Crescimento ao longo do tempo
+   - Picos de popularidade
+
+2. **Características Musicais**
+   - Correlação com streams
+   - Padrões por gênero
+   - Tendências sazonais
+
+3. **Análise de Artistas**
+   - Ranking por streams
+   - Impacto de colaborações
+   - Consistência de performance
+
+## 🛠️ Stack Tecnológico
+### Core
+- Python 3.9+
+- Pandas 1.5+
+- NumPy 1.20+
+
+### Visualização
+- Matplotlib 3.4+
 - Seaborn 0.11+
+- Plotly 5.0+
+
+### Ambiente
 - Jupyter Notebook
+- VSCode
+- Git
 
 ## 📁 Estrutura do Projeto
 ```
-├── EDA_spotify.ipynb               # Código principal com análise exploratória
-├── README.md          # Este arquivo
-└── data/
-    └── Spotify Most Streamed Songs.csv  # Dataset
+data-analyst-project/
+├── data/
+│   ├── raw/               # Dados originais do Spotify
+│   └── processed/         # Dados limpos e transformados
+├── notebooks/
+│   ├── 01_exploratory.ipynb    # Análise exploratória inicial
+│   ├── 02_features.ipynb       # Análise de características
+│   └── 03_insights.ipynb       # Conclusões e visualizações
+├── src/
+│   ├── data_preprocessing.py    # Funções de limpeza
+│   ├── data_analysis.py        # Funções analíticas
+│   └── visualization.py        # Funções de visualização
+├── requirements.txt            # Dependências
+└── README.md                  # Documentação
 ```
-
-## 🔍 Funcionalidades
-- **Análise de Metadados**: Função especializada para exploração inicial dos dados
-- **Limpeza de Dados**: Tratamento de valores ausentes e correção de tipos de dados
-- **Visualizações**: Gráficos e plots para análise visual dos dados
-- **Análise Estatística**: Exploração de correlações e padrões nos dados
-
-## 📈 Principais Análises
-1. Distribuição de streams por música
-2. Correlação entre popularidade e características musicais
-3. Análise temporal das músicas mais tocadas
-4. Padrões em características musicais (danceability, energy, etc.)
 
 ## 🚀 Como Executar
-1. Clone este repositório
-2. Instale as dependências:
+1. **Preparação do Ambiente**
 ```bash
-pip install pandas numpy matplotlib seaborn
-```
-3. Execute o notebook:
-```bash
-jupyter notebook ed.py
+# Clone o repositório
+git clone https://github.com/seu-usuario/spotify-analysis.git
+cd spotify-analysis
+
+# Crie o ambiente virtual
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+# ou
+.\venv\Scripts\activate   # Windows
+
+# Instale as dependências
+pip install -r requirements.txt
 ```
 
-## 📊 Resultados
-- Identificação de padrões em músicas de sucesso
-- Análise de características mais comuns em hits
-- Visualizações interativas dos dados
-- Insights sobre tendências musicais
+2. **Configuração dos Dados**
+```bash
+# Crie as pastas necessárias
+mkdir -p data/{raw,processed}
 
-## 🤝 Contribuições
-Contribuições são bem-vindas! Sinta-se à vontade para:
-- Melhorar a documentação
-- Enviar pull requests
+# Coloque seu arquivo CSV do Spotify em data/raw/
+```
+
+3. **Execução da Análise**
+```bash
+# Processe os dados
+python src/data_preprocessing.py
+
+# Execute os notebooks
+jupyter notebook notebooks/
+```
+
+## 📊 Resultados Principais
+### Descobertas
+- Padrões de sucesso identificados
+- Características mais influentes
+- Tendências temporais relevantes
+
+### Visualizações
+- Heatmaps de correlação
+- Gráficos de distribuição
+- Análises temporais
 
 ## 👤 Autor
-[Tiago silva]
-- LinkedIn: [www.linkedin.com/in/tiagocientistadados]
-- GitHub: [https://github.com/tmarsbr]
-- Email: [tiagomars233@gmail.com]
+**Tiago Silva**
+- 🔗 [LinkedIn](https://www.linkedin.com/in/tiagocientistadados)
+- 💻 [GitHub](https://github.com/tmarsbr)
+- 📧 [Email](mailto:tiagomars233@gmail.com)
+
+## 🤝 Como Contribuir
+1. Fork o projeto
+2. Crie sua Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
+4. Push para a Branch (`git push origin feature/AmazingFeature`)
+5. Abra um Pull Request
+
+## 📝 Licença
+Distribuído sob a licença MIT. Veja `LICENSE` para mais informações.
 
 ## 🙏 Agradecimentos
 - Spotify pela disponibilização dos dados
-- Comunidade de Data Science pelos recursos e ferramentas
+- Comunidade de Data Science pelo suporte
+- Contribuidores do projeto
