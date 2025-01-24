@@ -182,10 +182,9 @@ def plot_top_items(df, value_col, label_col, n=10, title=None):
     plt.show()
 
 def plot_danceability_vs_energy(df):
-    plt.style.use('dark_background')  # Tema escuro para contraste
+    plt.style.use('dark_background')
     plt.figure(figsize=(18, 10))
     
-    # Cores neon para apresentações
     scatter = sns.scatterplot(
         data=df,
         x='danceability_%',
@@ -199,20 +198,24 @@ def plot_danceability_vs_energy(df):
         linewidth=0.5
     )
     
-    # Título narrativo
+    # Título e eixos
     plt.title('Músicas Mais Populares: Alta Energia + Alta Dançabilidade', 
               fontsize=24, pad=30, fontweight='bold', color='#ecf0f1')
-    
-    # Eixos com destaque
     plt.xlabel('Dançabilidade (%)', fontsize=18, color='#bdc3c7')
     plt.ylabel('Energia (%)', fontsize=18, color='#bdc3c7')
     
-    # Quadrante destacado
-    plt.axhspan(60, 90, xmin=0.6, xmax=1, alpha=0.2, color='#2ecc71')
-    plt.text(72, 75, 'Músicas Virais', fontsize=16, color='#2ecc71', 
-             ha='center', va='center')
+    # Área destacada com melhor contraste
+    plt.axhspan(60, 90, xmin=0.6, xmax=1, alpha=0.2, color='#00FFFF')
+    plt.text(72, 75, 'Músicas Virais', fontsize=16, color='#00FFFF', 
+             ha='center', va='center', fontweight='bold')
     
-    # Legendas flutuantes
+    # Remover grade para design mais limpo
+    plt.grid(False)
+    ax = plt.gca()
+    ax.xaxis.grid(False)
+    ax.yaxis.grid(False)
+    
+    # Legenda
     plt.legend(
         title='Posição nos Charts\n(e Tamanho = Streams)',
         title_fontsize=14,
@@ -223,7 +226,7 @@ def plot_danceability_vs_energy(df):
     )
     
     plt.tight_layout()
-    plt.savefig('dance_energy.png', dpi=300, transparent=True)  # Fundo transparente
+    plt.savefig('dance_energy.png', dpi=300, transparent=True)
     plt.show()
 
 def plot_releases_by_month(df):
@@ -234,7 +237,17 @@ def plot_releases_by_month(df):
     df_month['month_name'] = pd.Categorical(df_month['month_name'], categories=month_order, ordered=True)
     df_month = df_month.sort_values('month_name')
     
-    bar = sns.barplot(x='month_name', y='count', data=df_month, palette='plasma', edgecolor='black')
+    # Updated barplot with hue and legend=False
+    bar = sns.barplot(
+        x='month_name', 
+        y='count', 
+        data=df_month,
+        hue='month_name',  # Add hue parameter
+        palette='plasma',
+        edgecolor='black',
+        legend=False  # Disable legend since it's redundant
+    )
+    
     bar.set_title('Number of Releases by Month', fontsize=20)
     bar.set_xlabel('Month', fontsize=15)
     bar.set_ylabel('Number of Releases', fontsize=15)
