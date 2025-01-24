@@ -3,14 +3,28 @@ import numpy as np
 from typing import Optional
 
 def load_data(file_path: str) -> pd.DataFrame:
-    """Load data from a CSV file."""
+    """Carrega dados de um arquivo CSV.
+    
+    Args:
+        file_path (str): Caminho do arquivo CSV
+        
+    Returns:
+        pd.DataFrame: DataFrame com os dados carregados
+    """
     try:
         return pd.read_csv(file_path)
     except FileNotFoundError:
-        raise FileNotFoundError(f"Could not find file at path: {file_path}")
+        raise FileNotFoundError(f"Arquivo não encontrado no caminho: {file_path}")
 
 def check_missing_values(df: pd.DataFrame) -> pd.Series:
-    """Check for missing values in the DataFrame."""
+    """Verifica valores ausentes no DataFrame.
+    
+    Args:
+        df (pd.DataFrame): DataFrame a ser analisado
+        
+    Returns:
+        pd.Series: Série com contagem de valores ausentes por coluna
+    """
     return df.isnull().sum()
 
 def get_basic_statistics(df: pd.DataFrame) -> pd.DataFrame:

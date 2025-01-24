@@ -5,13 +5,21 @@ import pandas as pd
 from typing import Optional, List, Union
 from matplotlib import ticker  # Add this import
 
-def plot_data(data, figsize=(18, 6), title="Data Visualization"):
-    plt.style.use('seaborn')  # Aplicando um tema mais moderno
+def plot_data(data, figsize=(18, 6), title="Visualização dos Dados"):
+    """
+    Plota dados em um gráfico de linha básico.
+    
+    Args:
+        data: Dados a serem plotados
+        figsize (tuple): Tamanho da figura
+        title (str): Título do gráfico
+    """
+    plt.style.use('seaborn')
     plt.figure(figsize=figsize)
     plt.plot(data)
     plt.title(title, pad=20, fontsize=16)
-    plt.xlabel('X-axis', fontsize=14)
-    plt.ylabel('Y-axis', fontsize=14)
+    plt.xlabel('Eixo X', fontsize=14)
+    plt.ylabel('Eixo Y', fontsize=14)
     plt.grid(True, alpha=0.3)
     plt.tight_layout()
     plt.show()
@@ -63,6 +71,15 @@ def generate_scatter_plot(x, y):
     plt.show()
 
 def plot_streams_distribution(df):
+    """
+    Plota a distribuição de streams em escala logarítmica.
+    
+    Parâmetros:
+    df (DataFrame): DataFrame contendo os dados do Spotify
+    
+    Retorna:
+    None - Salva o gráfico como 'streams_distribution.png'
+    """
     plt.style.use('seaborn-v0_8-whitegrid')  # Fundo branco para PPT
     plt.figure(figsize=(16, 9))  # Formato 16:9 para slides
     
@@ -182,6 +199,15 @@ def plot_top_items(df, value_col, label_col, n=10, title=None):
     plt.show()
 
 def plot_danceability_vs_energy(df):
+    """
+    Plota um gráfico de dispersão relacionando danceabilidade e energia das músicas.
+    
+    Parâmetros:
+    df (DataFrame): DataFrame contendo os dados do Spotify
+    
+    Retorna:
+    None - Salva o gráfico como 'dance_energy.png'
+    """
     plt.style.use('dark_background')
     plt.figure(figsize=(18, 10))
     
@@ -230,33 +256,80 @@ def plot_danceability_vs_energy(df):
     plt.show()
 
 def plot_releases_by_month(df):
+    """
+    Plota o número de lançamentos por mês com porcentagens.
+    
+    Parâmetros:
+    df (DataFrame): DataFrame contendo os dados do Spotify
+    
+    Retorna:
+    None - Salva o gráfico como 'releases_by_month.png'
+    """
+    plt.style.use('seaborn-v0_8-whitegrid')
     plt.figure(figsize=(14, 7))
-    month_order = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    
+    # Preparar dados
+    month_order = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 
+                   'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
     df['month_name'] = df['mes'].map(lambda x: month_order[x-1])
     df_month = df.groupby('month_name').size().reset_index(name='count')
+    
+    # Calcular porcentagens
+    total = df_month['count'].sum()
+    df_month['percentage'] = (df_month['count'] / total) * 100
+    
+    # Ordenar meses
     df_month['month_name'] = pd.Categorical(df_month['month_name'], categories=month_order, ordered=True)
     df_month = df_month.sort_values('month_name')
     
-    # Updated barplot with hue and legend=False
+    # Criar gráfico
     bar = sns.barplot(
         x='month_name', 
         y='count', 
         data=df_month,
-        hue='month_name',  # Add hue parameter
-        palette='plasma',
+        hue='month_name',
+        palette='plasma', 
         edgecolor='black',
-        legend=False  # Disable legend since it's redundant
+        legend=False,
     )
     
-    bar.set_title('Number of Releases by Month', fontsize=20)
-    bar.set_xlabel('Month', fontsize=15)
-    bar.set_ylabel('Number of Releases', fontsize=15)
+    # Personalização
+    plt.title('Distribuição Mensal de Lançamentos Musicais', 
+              fontsize=18, pad=20, fontweight='bold')
+    plt.xlabel('Mês', fontsize=14)
+    plt.ylabel('', fontsize=14)
+    plt.ylim(0, df_month['count'].max() * 1.15)
+    
+    # Adicionar porcentagens
+    for p, percentage in zip(bar.patches, df_month['percentage']):
+        height = p.get_height()
+        bar.annotate(
+            f'{percentage:.1f}%', 
+            (p.get_x() + p.get_width() / 2., height),
+            ha='center', 
+            va='bottom', 
+            xytext=(0, 15),
+            textcoords='offset points',
+            fontsize=10,
+            color='black',
+            fontweight='bold'
+        )
+    
     plt.xticks(rotation=45)
     plt.tight_layout()
     plt.savefig('releases_by_month.png', dpi=300, bbox_inches='tight')
     plt.show()
 
 def plot_streams_evolution(df):
+    """
+    Plota a evolução de streams ao longo dos anos.
+    
+    Parâmetros:
+    df (DataFrame): DataFrame contendo os dados do Spotify
+    
+    Retorna:
+    None - Salva o gráfico como 'streams_evolution.png'
+    """
     plt.style.use('seaborn-v0_8-whitegrid')
     plt.figure(figsize=(18, 9))
     

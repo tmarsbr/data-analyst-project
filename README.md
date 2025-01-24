@@ -1,7 +1,7 @@
-# 🎵 Análise de Músicas Mais Streamadas do Spotify
+# 🎵 Análise das Músicas Mais Streamadas no Spotify
 
 ## 📊 Sobre o Projeto
-Uma análise exploratória aprofundada das músicas mais streamadas no Spotify em 2023, utilizando Python e técnicas avançadas de Data Science para descobrir padrões e tendências que definem o sucesso musical na era do streaming.
+Uma análise exploratória aprofundada das músicas mais streamadas no Spotify em 2023, utilizando Python e técnicas avançadas de Ciência de Dados para descobrir padrões e tendências que definem o sucesso musical na era do streaming.
 
 ## 🎯 Objetivos
 ### Principais
@@ -9,20 +9,20 @@ Uma análise exploratória aprofundada das músicas mais streamadas no Spotify e
 - Analisar correlações entre características musicais e streams
 - Mapear tendências temporais de lançamentos
 
-### Específicos
-- Quantificar o impacto de features musicais (danceability, energy, etc.)
+### Específicos 
+- Quantificar o impacto das características musicais (danceability, energy, etc.)
 - Avaliar a influência de colaborações entre artistas
 - Medir o efeito da presença em playlists
 
 ## 📈 Metodologia
 1. **Coleta de Dados**
    - Dataset do Spotify com músicas mais streamadas
-   - Métricas de áudio e engajamento
+   - Métricas de áudio e engajamento 
    - Dados de playlists e charts
 
 2. **Pré-processamento**
    - Limpeza de dados ausentes
-   - Normalização de features
+   - Normalização de características
    - Tratamento de outliers
 
 3. **Análise Exploratória**
