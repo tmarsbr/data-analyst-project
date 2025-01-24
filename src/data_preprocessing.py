@@ -28,24 +28,23 @@ def clean_spotify_data(df: pd.DataFrame) -> pd.DataFrame:
         df = df.dropna(subset=['artist(s)_name', 'track_name'])
         
         # Convert streams to numeric and handle missing values
-        df['streams'] = pd.to_numeric(df['streams'].astype(str).str.replace(',', ''), errors='coerce')
-        # Fill NaN streams with the median of streams
-        df['streams'] = df['streams'].fillna(df['streams'].median())
+        df['streams'] = pd.to_numeric(df['streams'].str.replace(',', ''), errors='coerce')
         
         # Clean text columns
         text_columns = ['track_name', 'artist(s)_name']
         if 'album_type' in df.columns:
             text_columns.append('album_type')
-        df[text_columns] = df[text_columns].apply(lambda x: x.str.strip() if x.dtype == 'object' else x)
+        df[text_columns] = df[text_columns].apply(lambda x: x.str.strip())
         
         # Handle missing values and commas in 'in_shazam_charts'
-        df['in_shazam_charts'] = (
-            pd.to_numeric(df['in_shazam_charts'].astype(str).str.replace(',', ''), errors='coerce')
-            .fillna(0)
-            .astype(int)
-        )
+        if 'in_shazam_charts' in df.columns:
+            df['in_shazam_charts'] = (
+                pd.to_numeric(df['in_shazam_charts'].str.replace(',', ''), errors='coerce')
+                .fillna(0)
+                .astype(int)
+            )
         
-        df['key'] = df['key'].fillna('Unknown')  # Fill NaNs with 'Unknown'
+        df['key'] = df['key'].fillna('Unknown')
         
         # Process release date
         df = _process_release_date(df)
@@ -55,7 +54,6 @@ def clean_spotify_data(df: pd.DataFrame) -> pd.DataFrame:
         df['ano'] = df['released_date'].dt.year
         df['mes'] = df['released_date'].dt.month
         
-        print("\n✅ Pré-processamento concluído!")
         return df
         
     except Exception as e:
