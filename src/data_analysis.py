@@ -4,21 +4,6 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from typing import Dict, List, Tuple
 
-def perform_analysis(data):
-    # Perform data analysis on the provided dataset
-    # This function can include various analysis techniques
-    pass
-
-def calculate_statistics(data):
-    # Calculate and return basic statistics of the dataset
-    # This can include mean, median, mode, etc.
-    pass
-
-def generate_report(statistics):
-    # Generate a report based on the calculated statistics
-    # This can include visualizations and insights
-    pass
-
 def get_top_artists(data: pd.DataFrame, n: int = 10) -> pd.Series:
     return data['artist(s)_name'].value_counts().head(n)
 
@@ -44,3 +29,18 @@ def calculate_correlation(df, features):
     plt.title('Matriz de Correlação')
     plt.tight_layout()
     plt.show()
+
+def get_basic_stats(df, columns=None):
+    """Obtém estatísticas básicas para colunas especificadas."""
+    if columns is None:
+        columns = df.select_dtypes(include=['float64', 'int64']).columns
+    return df[columns].describe()
+
+def analyze_temporal_patterns(df, date_column, value_column):
+    """Analisa padrões ao longo do tempo."""
+    return df.groupby(date_column)[value_column].agg(['mean', 'count', 'sum'])
+
+def calculate_collaboration_metrics(df):
+    """Calcula métricas sobre colaborações de artistas."""
+    df['collab_count'] = df['artist(s)_name'].str.count(',') + 1
+    return df.groupby('released_year')['collab_count'].mean()

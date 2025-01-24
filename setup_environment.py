@@ -1,21 +1,29 @@
 import os
-import sys
 from pathlib import Path
 
-def setup_environment():
-    project_root = Path(__file__).resolve().parent
-    data_dir = project_root / 'data'
-    raw_dir = data_dir / 'raw'
-    processed_dir = data_dir / 'processed'
+# Definir o diretório raiz do projeto
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
-    raw_dir.mkdir(parents=True, exist_ok=True)
-    processed_dir.mkdir(parents=True, exist_ok=True)
+# Definir diretórios de dados
+DATA_DIR = PROJECT_ROOT / 'data'
+RAW_DIR = DATA_DIR / 'raw'
+PROCESSED_DIR = DATA_DIR / 'processed'
 
-    if str(project_root) not in sys.path:
-        sys.path.insert(0, str(project_root))
+# Criar diretórios se não existirem
+RAW_DIR.mkdir(parents=True, exist_ok=True)
+PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
 
-    print(f"Project root: {project_root}")
-    print(f"Data directories created at {data_dir}")
+def create_directories():
+    os.makedirs('data/raw', exist_ok=True)
+    os.makedirs('data/processed', exist_ok=True)
+    os.makedirs('notebooks', exist_ok=True)
+    os.makedirs('src', exist_ok=True)
 
 if __name__ == "__main__":
-    setup_environment()
+    create_directories()
+    print("Diretórios criados com sucesso!")
+
+# Instalar pacotes necessários
+os.system('pip install -r requirements.txt')
+
+print("Ambiente configurado com sucesso!")

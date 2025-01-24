@@ -9,6 +9,18 @@ def load_data(file_path: str) -> pd.DataFrame:
     except FileNotFoundError:
         raise FileNotFoundError(f"Could not find file at path: {file_path}")
 
+def check_missing_values(df: pd.DataFrame) -> pd.Series:
+    """Check for missing values in the DataFrame."""
+    return df.isnull().sum()
+
+def get_basic_statistics(df: pd.DataFrame) -> pd.DataFrame:
+    """Get basic statistics of the DataFrame."""
+    return df.describe()
+
+def get_top_artists(df: pd.DataFrame, top_n: int = 10) -> pd.Series:
+    """Get the top N artists by count."""
+    return df['artist(s)_name'].value_counts().head(top_n)
+
 def clean_data(df: pd.DataFrame) -> pd.DataFrame:
     """Remove missing values and reset index."""
     df = df.dropna()  # Remove missing values
