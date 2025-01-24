@@ -3,53 +3,51 @@ import numpy as np
 from typing import Optional
 
 def load_data(file_path: str) -> pd.DataFrame:
-    """Load data from a CSV file.
-    
-    Args:
-        file_path (str): Path to the CSV file
-        
-    Returns:
-        pd.DataFrame: Loaded dataset
-    """
+    """Load data from a CSV file."""
     try:
         return pd.read_csv(file_path)
     except FileNotFoundError:
         raise FileNotFoundError(f"Could not find file at path: {file_path}")
 
 def clean_data(df: pd.DataFrame) -> pd.DataFrame:
+    """Remove missing values and reset index."""
     df = df.dropna()  # Remove missing values
     df = df.reset_index(drop=True)  # Reset index after dropping
     return df
 
 def transform_data(df: pd.DataFrame) -> pd.DataFrame:
-    # Example transformation: converting a column to datetime
+    """Example transformation: converting a column to datetime."""
     if 'date_column' in df.columns:
         df['date_column'] = pd.to_datetime(df['date_column'])
     return df
 
 def clean_spotify_data(df: pd.DataFrame) -> pd.DataFrame:
-    """Clean and prepare Spotify dataset.
-    
-    Args:
-        df (pd.DataFrame): Raw Spotify dataset
-        
-    Returns:
-        pd.DataFrame: Cleaned dataset with proper data types and derived columns
-    """
+    """Clean and prepare Spotify dataset."""
     try:
-        # Handle missing values
-        df = df.dropna(subset=['streams', 'artist(s)_name', 'track_name'])
+        # Handle missing values in critical columns
+        df = df.dropna(subset=['artist(s)_name', 'track_name'])
         
-        # Convert streams to numeric using a more robust method
+        # Convert streams to numeric and handle missing values
         df['streams'] = pd.to_numeric(df['streams'].astype(str).str.replace(',', ''), errors='coerce')
+        # Fill NaN streams with the median of streams
+        df['streams'] = df['streams'].fillna(df['streams'].median())
         
-        # Clean text columns with improved handling - only process columns that exist
+        # Clean text columns
         text_columns = ['track_name', 'artist(s)_name']
         if 'album_type' in df.columns:
             text_columns.append('album_type')
         df[text_columns] = df[text_columns].apply(lambda x: x.str.strip() if x.dtype == 'object' else x)
         
-        # Handle released_date conversion
+        # Handle missing values and commas in 'in_shazam_charts'
+        df['in_shazam_charts'] = (
+            pd.to_numeric(df['in_shazam_charts'].astype(str).str.replace(',', ''), errors='coerce')
+            .fillna(0)
+            .astype(int)
+        )
+        
+        df['key'] = df['key'].fillna('Unknown')  # Fill NaNs with 'Unknown'
+        
+        # Process release date
         df = _process_release_date(df)
         
         # Sort and add time features
@@ -89,7 +87,7 @@ def _process_release_date(df: pd.DataFrame) -> pd.DataFrame:
 def normalize_audio_features(df: pd.DataFrame, features: Optional[list] = None) -> pd.DataFrame:
     """Normalize audio features to range [0,1]."""
     if features is None:
-        features = ['danceability', 'energy', 'valence', 'bpm']
+        features = ['danceability_%', 'energy_%', 'valence_%', 'bpm']
     
     for feature in features:
         if feature in df.columns and df[feature].dtype in ['int64', 'float64']:
@@ -97,5 +95,20 @@ def normalize_audio_features(df: pd.DataFrame, features: Optional[list] = None) 
     
     return df
 
-# Remove the code execution at module level
-# This should be done in the main script instead
+# Example usage
+if __name__ == "__main__":
+    # Load the data
+    file_path = 'spotify_songs.csv'  # Replace with your actual file path
+    df = load_data(file_path)
+    
+    # Clean the data
+    df = clean_spotify_data(df)
+    
+    # Normalize audio features
+    df = normalize_audio_features(df)
+    
+    # Verify the data
+    print("\nMissing values after preprocessing:")
+    print(df.isnull().sum())
+    print("\nFirst few rows of the dataset:")
+    print(df.head())
