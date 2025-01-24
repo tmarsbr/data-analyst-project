@@ -1,5 +1,7 @@
 import pandas as pd
 import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
 from typing import Dict, List, Tuple
 
 def perform_analysis(data):
@@ -34,3 +36,11 @@ def calculate_audio_features_stats(data: pd.DataFrame) -> Dict[str, float]:
 
 def analyze_streams_by_year(data: pd.DataFrame) -> pd.Series:
     return data.groupby(data['released_date'].dt.year)['streams'].mean()
+
+def calculate_correlation(df, features):
+    correlation = df[features].corr()
+    plt.figure(figsize=(10, 8))
+    sns.heatmap(correlation, annot=True, cmap='coolwarm', center=0)
+    plt.title('Matriz de Correlação')
+    plt.tight_layout()
+    plt.show()

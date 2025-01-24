@@ -1,14 +1,17 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
-from typing import Optional
+import numpy as np
+import pandas as pd
+from typing import Optional, List, Union
 
-def plot_data(data):
-    plt.figure(figsize=(10, 6))
+def plot_data(data, figsize=(18, 6), title="Data Visualization"):
+    plt.figure(figsize=figsize)
     plt.plot(data)
-    plt.title('Data Visualization')
-    plt.xlabel('X-axis')
-    plt.ylabel('Y-axis')
-    plt.grid()
+    plt.title(title, pad=20, fontsize=14)
+    plt.xlabel('X-axis', fontsize=12)
+    plt.ylabel('Y-axis', fontsize=12)
+    plt.grid(True, alpha=0.3)
+    plt.tight_layout()
     plt.show()
 
 def create_histogram(data, bins=10):
@@ -29,17 +32,10 @@ def generate_scatter_plot(x, y):
     plt.grid()
     plt.show()
 
-def plot_streams_distribution(data, log_scale: bool = True):
+def plot_streams_distribution(df):
     plt.figure(figsize=(12, 6))
-    if log_scale:
-        sns.histplot(np.log10(data['streams']), bins=50)
-        plt.xlabel('Log10(Streams)')
-    else:
-        sns.histplot(data['streams'], bins=50)
-        plt.xlabel('Streams')
-    plt.title('Distribution of Song Streams')
-    plt.ylabel('Count')
-    plt.grid(True)
+    sns.histplot(data=df, x='streams', bins=50, log_scale=True)
+    plt.title('Distribuição de Streams (Escala Log)')
     plt.show()
 
 def plot_feature_correlation_matrix(data, features: Optional[List[str]] = None):
@@ -49,4 +45,25 @@ def plot_feature_correlation_matrix(data, features: Optional[List[str]] = None):
     plt.figure(figsize=(10, 8))
     sns.heatmap(data[features].corr(), annot=True, cmap='coolwarm')
     plt.title('Feature Correlation Matrix')
+    plt.show()
+
+def plot_top_artists(df: pd.DataFrame, n: int = 10):
+    plt.figure(figsize=(15, 8))
+    top_artists = df['artist(s)_name'].value_counts().head(n)
+    sns.barplot(x=top_artists.values, y=top_artists.index, palette='viridis')
+    plt.title('Top Artistas por Número de Músicas', pad=20, fontsize=14)
+    plt.xlabel('Número de Músicas', fontsize=12)
+    plt.ylabel('Artista', fontsize=12)
+    plt.tight_layout()
+    plt.show()
+
+def plot_streams_by_year(df: pd.DataFrame):
+    plt.figure(figsize=(15, 8))
+    yearly_streams = df.groupby(df['released_date'].dt.year)['streams'].mean()
+    sns.lineplot(x=yearly_streams.index, y=yearly_streams.values, marker='o')
+    plt.title('Média de Streams por Ano', pad=20, fontsize=14)
+    plt.xlabel('Ano', fontsize=12)
+    plt.ylabel('Média de Streams', fontsize=12)
+    plt.grid(True, alpha=0.3)
+    plt.tight_layout()
     plt.show()
